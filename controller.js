@@ -26,281 +26,153 @@ $(function () {
     var canvas = $("#viewport")[0],
         context = canvas.getContext("2d");
 
-    var controller = {
-        anarchy: {
-            pos: { x: 45, y: 0 },
+    var CButton = function (x, y, fillStyle, path, text) {
+        this.position = { x: x, y: y };
 
-            alpha: 0.5,
+        this.fillStyle = fillStyle;
 
-            image: (function () { var img = new Image(); img.src = "http://cdn.bulbagarden.net/upload/4/47/Bag_Helix_Fossil_Sprite.png"; return img; })(),
+        this.path = path;
 
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.rect(0, 0, this.image.width, this.image.height);
-                ctx.closePath();
-            },
+        this.text = text || null;
 
-            draw: function (ctx) {
-                ctx.save();
+        this.alpha = 0.5;
 
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.globalAlpha = this.alpha;
-
-                ctx.drawImage(this.image, 0, 0);
-
-                ctx.restore();
-            },
-        },
-
-        democracy: {
-            pos: { x: 70, y: 0 },
-
-            alpha: 0.5,
-
-            image: (function () { var img = new Image(); img.src = "http://cdn.bulbagarden.net/upload/5/5f/Bag_Dome_Fossil_Sprite.png"; return img; })(),
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.rect(0, 0, this.image.width, this.image.height);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.globalAlpha = this.alpha;
-
-                ctx.drawImage(this.image, 0, 0);
-
-                ctx.restore();
-            },
-        },
-
-        left: {
-            pos: { x: 0, y: 15 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(10, 0);
-                ctx.lineTo(15, 5);
-                ctx.lineTo(10, 10);
-                ctx.lineTo(0, 10);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        up: {
-            pos: { x: 15, y: 0 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(10, 0);
-                ctx.lineTo(10, 10);
-                ctx.lineTo(5, 15);
-                ctx.lineTo(0, 10);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        right: {
-            pos: { x: 25, y: 15 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.moveTo(0, 5);
-                ctx.lineTo(5, 0);
-                ctx.lineTo(15, 0);
-                ctx.lineTo(15, 10);
-                ctx.lineTo(5, 10);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        down: {
-            pos: { x: 15, y: 25 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.moveTo(5, 0);
-                ctx.lineTo(10, 5);
-                ctx.lineTo(10, 15);
-                ctx.lineTo(0, 15);
-                ctx.lineTo(0, 5);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        a: {
-            pos: { x: 125, y: 17 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.arc(0, 0, 9, 0, Math.PI * 2);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(200,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        b: {
-            pos: { x: 105, y: 30 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.arc(0, 0, 9, 0, Math.PI * 2);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.fillStyle = "rgba(200,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        select: {
-            pos: { x: 45, y: 35 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.arc(14, 3, 3, 3 * Math.PI / 2, Math.PI / 2);
-                ctx.arc(3, 3, 3, Math.PI / 2, 3 * Math.PI / 2);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.rotate(-Math.PI / 8);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
-
-        start: {
-            pos: { x: 70, y: 35 },
-
-            alpha: 0.5,
-
-            path: function (ctx) {
-                ctx.beginPath();
-                ctx.arc(14, 3, 3, 3 * Math.PI / 2, Math.PI / 2);
-                ctx.arc(3, 3, 3, Math.PI / 2, 3 * Math.PI / 2);
-                ctx.closePath();
-            },
-
-            draw: function (ctx) {
-                ctx.save();
-
-                ctx.translate(this.pos.x, this.pos.y);
-
-                ctx.rotate(-Math.PI / 8);
-
-                ctx.fillStyle = "rgba(0,0,0," + this.alpha + ")";
-
-                this.path(ctx);
-                ctx.fill();
-
-                ctx.restore();
-            },
-        },
+        this.strokeStyle = "black";
     };
+    CButton.prototype.draw = function (ctx) {
+        ctx.save();
+
+        ctx.fillStyle = this.fillStyle;
+        ctx.strokeStyle = this.strokeStyle;
+        ctx.globalAlpha = this.alpha;
+
+        this.path(ctx);
+
+        if (this.image != null) {
+            ctx.drawImage(this.image, 0, 0);
+        } else {
+            ctx.fill();
+        }
+
+        if (this.text !== null) {
+            this.text(ctx);
+        }
+
+        if (this.hover) ctx.stroke();
+
+        ctx.restore();
+    };
+
+    var circlePath = function (ctx) {
+        ctx.translate(this.position.x, this.position.y)
+        ctx.beginPath();
+        ctx.arc(0, 0, 9, 0, 2 * Math.PI);
+        ctx.closePath();
+    };
+
+    var rectPath = function (ctx) {
+        ctx.translate(this.position.x, this.position.y)
+        ctx.rotate(-Math.PI / 8);
+        ctx.beginPath();
+        ctx.arc(14, 3, 3, 3 * Math.PI / 2, Math.PI / 2);
+        ctx.arc(3, 3, 3, Math.PI / 2, 3 * Math.PI / 2);
+        ctx.closePath();
+    };
+
+    var imagePath = function (ctx) {
+        ctx.translate(this.position.x, this.position.y);
+
+        ctx.beginPath();
+        ctx.rect(0, 0, this.image.width, this.image.height);
+        ctx.closePath();
+    };
+
+    var controller = {
+        left: new CButton(0, 15, "black", function (ctx) {
+            ctx.translate(this.position.x, this.position.y)
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(10, 0);
+            ctx.lineTo(15, 5);
+            ctx.lineTo(10, 10);
+            ctx.lineTo(0, 10);
+            ctx.closePath();
+        }),
+
+        up: new CButton(15, 0, "black", function (ctx) {
+            ctx.translate(this.position.x, this.position.y)
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(10, 0);
+            ctx.lineTo(10, 10);
+            ctx.lineTo(5, 15);
+            ctx.lineTo(0, 10);
+            ctx.closePath();
+        }),
+
+        right: new CButton(25, 15, "black", function (ctx) {
+            ctx.translate(this.position.x, this.position.y)
+            ctx.beginPath();
+            ctx.moveTo(0, 5);
+            ctx.lineTo(5, 0);
+            ctx.lineTo(15, 0);
+            ctx.lineTo(15, 10);
+            ctx.lineTo(5, 10);
+            ctx.closePath();
+        }),
+
+        down: new CButton(15, 25, "black", function (ctx) {
+            ctx.translate(this.position.x, this.position.y)
+            ctx.beginPath();
+            ctx.moveTo(5, 0);
+            ctx.lineTo(10, 5);
+            ctx.lineTo(10, 15);
+            ctx.lineTo(0, 15);
+            ctx.lineTo(0, 5);
+            ctx.closePath();
+        }),
+
+        a: new CButton(125, 17, "rgb(200,0,0)", circlePath, function (ctx) {
+            ctx.font = "bold 10px sans-serif";
+            ctx.fillStyle = "white";
+            ctx.fillText("A", -3, 3);
+        }),
+
+        b: new CButton(105, 30, "rgb(200,0,0)", circlePath, function (ctx) {
+            ctx.font = "bold 10px sans-serif";
+            ctx.fillStyle = "white";
+            ctx.fillText("B", -3, 3);
+        }),
+
+        select: new CButton(45, 35, "black", rectPath, function (ctx) {
+            ctx.rotate(Math.PI / 8);
+            ctx.font = "7px sans-serif";
+            ctx.fillStyle = "black";
+            ctx.fillText("SELECT", -7, 11);
+        }),
+
+        start: new CButton(70, 35, "black", rectPath, function (ctx) {
+            ctx.rotate(Math.PI / 8);
+            ctx.font = "7px sans-serif";
+            ctx.fillStyle = "black";
+            ctx.fillText("START", -2, 11);
+        }),
+
+        anarchy: new CButton(45, 0, "black", imagePath),
+
+        democracy: new CButton(70, 0, "black", imagePath),
+    };
+
+    controller.anarchy.image = (function () {
+        var i = new Image();
+        i.src = "http://cdn.bulbagarden.net/upload/4/47/Bag_Helix_Fossil_Sprite.png";
+        return i;
+    })();
+    controller.democracy.image = (function () {
+        var i = new Image();
+        i.src = "http://cdn.bulbagarden.net/upload/5/5f/Bag_Dome_Fossil_Sprite.png";
+        return i;
+    })();
 
     var animate = function () {
         window.requestAnimationFrame(animate);
@@ -325,23 +197,23 @@ $(function () {
     $(canvas).mousedown(function (e) {
         if (e.which === 1) {
             $.each(controller, function (name, button) {
-                context.save();
-
-                context.translate(button.pos.x, button.pos.y);
-
-                if (name === "start" || name === "select") {
-                    context.rotate(-Math.PI / 8);
-                }
-
-                button.path(context);
-
-                if (context.isPointInPath(e.offsetX, e.offsetY)) {
+                if (button.hover) {
                     $("#chat_text_input").val(name);
-                    $("#chat_speak").trigger("click");
+                    $("#chat_speak").click();
                 }
-
-                context.restore();
             });
         }
+    });
+
+    $(canvas).mousemove(function (e) {
+        $.each(controller, function (name, button) {
+            context.save();
+
+            button.path(context);
+
+            button.hover = context.isPointInPath(e.offsetX, e.offsetY);
+
+            context.restore();
+        });
     });
 });
