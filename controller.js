@@ -1,3 +1,10 @@
+/* Forked from mkosler's script at http://git.io/XrMw3w
+ * as of Revision 4. We're forking all scripts that are called
+ * from javascript snippets as a precaution to keep people from
+ * modifying their scripts to add malicious code. Do understand
+ * that we are being paranoid.
+ */
+
 $(function () {
 
     $("#controls > div").hide();
